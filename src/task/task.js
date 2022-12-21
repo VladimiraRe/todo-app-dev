@@ -8,30 +8,28 @@ export default class Task extends Component {
         created: formatDistanceToNow(this.props.created, {
             includeSeconds: true,
         }),
-        isCompleted: false,
-    };
-
-    completeTask = () => {
-        this.setState(({ isCompleted }) => ({ isCompleted: !isCompleted }));
     };
 
     render() {
-        const { isCompleted, created } = this.state;
+        const { isDone, description, onDeleted, onCompleted, onEditing } =
+            this.props;
         let classDescr = 'task__description';
-        if (isCompleted) classDescr += ' task__description--completed';
+        if (isDone) classDescr += ' task__description--done';
         return (
             <div className='task'>
                 <input
-                    onClick={this.completeTask}
+                    onClick={onCompleted}
                     className='task__toggle'
                     type='checkbox'
                 />
                 <label>
-                    <span className={classDescr}>{this.props.description}</span>
-                    <span className='task__created'>created {created}</span>
+                    <span className={classDescr}>{description}</span>
+                    <span className='task__created'>
+                        created {this.state.created}
+                    </span>
                 </label>
-                <Icon type='edit' />
-                <Icon onDeleted={this.props.onDeleted} type='destroy' />
+                <Icon type='edit' onEditing={onEditing} />
+                <Icon onDeleted={onDeleted} type='destroy' />
             </div>
         );
     }

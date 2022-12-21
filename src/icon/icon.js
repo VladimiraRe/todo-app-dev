@@ -1,9 +1,16 @@
 import React from 'react';
 import './icon.css';
 
-export default function Icon({ type, onDeleted }) {
+export default function Icon({ type, onDeleted, onEditing = null }) {
     let className = 'icon';
-    if (type === 'edit') className += ' icon--edit';
-    if (type === 'destroy') className += ' icon--destroy';
-    return <button onClick={onDeleted} className={className}></button>;
+    let onClick;
+    if (type === 'edit') {
+        className += ' icon--edit';
+        onClick = onEditing;
+    }
+    if (type === 'destroy') {
+        className += ' icon--destroy';
+        onClick = onDeleted;
+    }
+    return <button onClick={onClick} className={className}></button>;
 }
