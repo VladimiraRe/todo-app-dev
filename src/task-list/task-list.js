@@ -5,7 +5,15 @@ import './task-list.css';
 
 export default class TaskList extends Component {
     render() {
-        const { data, onDeleted, onCompleted, filter } = this.props;
+        const {
+            data,
+            filter,
+            edit,
+            onDeleted,
+            onCompleted,
+            onEditing,
+            onStartOfEditing,
+        } = this.props;
         const tasks = data
             .filter(
                 (el) =>
@@ -15,14 +23,25 @@ export default class TaskList extends Component {
             )
             .map(({ id, ...props }) => {
                 let className = 'task-list__item';
+                let isEdit = edit === id ? true : false;
                 return (
                     <li key={id} className={className}>
                         <Task
                             {...props}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
+                            onEditing={() => onStartOfEditing(id)}
+                            isEdit={isEdit}
                         />
-                        <TaskForm type='edit' />
+                        {isEdit && (
+                            <TaskForm
+                                startValue={props.description}
+                                onSubmit={(description) =>
+                                    onEditing(id, description)
+                                }
+                                edit={edit}
+                            />
+                        )}
                     </li>
                 );
             });

@@ -23,12 +23,31 @@ export default class TodoApp extends Component {
             this.createTask('Learn React'),
         ],
         filter: 'all',
+        edit: false,
     };
 
     addTask = (description) => {
         this.setState(({ data }) => ({
             data: [...data, this.createTask(description)],
         }));
+    };
+
+    startEditTask = (id) => {
+        this.setState({ edit: id });
+    };
+
+    editTask = (id, description) => {
+        this.setState(({ data }) => {
+            const inx = data.findIndex((el) => el.id === id);
+            return {
+                data: [
+                    ...data.slice(0, inx),
+                    { ...data[inx], description: description },
+                    ...data.slice(inx + 1),
+                ],
+            };
+        });
+        this.startEditTask(false);
     };
 
     deleteTask = (id) => {
@@ -68,12 +87,15 @@ export default class TodoApp extends Component {
         const tasksLeft = data.filter((el) => !el.isDone).length;
         return (
             <section className='todoApp'>
-                <AppHeader onAdded={this.addTask} />
+                <AppHeader onAdded={this.addTask} edit={this.state.edit} />
                 <section className='todoApp__main'>
                     <TaskList
                         data={data}
                         onDeleted={this.deleteTask}
                         onCompleted={this.completeTask}
+                        onEditing={this.editTask}
+                        onStartOfEditing={this.startEditTask}
+                        edit={this.state.edit}
                         filter={filter}
                     />
                     <Footer

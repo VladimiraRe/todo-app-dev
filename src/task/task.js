@@ -11,19 +11,29 @@ export default class Task extends Component {
     };
 
     render() {
-        const { isDone, description, onDeleted, onCompleted, onEditing } =
-            this.props;
-        let classDescr = 'task__description';
-        if (isDone) classDescr += ' task__description--done';
+        const {
+            isDone,
+            description,
+            onDeleted,
+            onCompleted,
+            onEditing,
+            isEdit,
+        } = this.props;
         return (
-            <div className='task'>
+            <div className={`task ${isEdit && 'task--editing'}`}>
                 <input
                     onClick={onCompleted}
                     className='task__toggle'
                     type='checkbox'
                 />
                 <label>
-                    <span className={classDescr}>{description}</span>
+                    <span
+                        className={`task__description ${
+                            isDone && 'task__description--done'
+                        }`}
+                    >
+                        {description}
+                    </span>
                     <span className='task__created'>
                         created {this.state.created}
                     </span>
