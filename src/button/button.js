@@ -1,11 +1,11 @@
 import React from 'react';
 import './button.css';
 
-export default function Button({ name, filter, onChange }) {
+export default function Button({ name, isSelected, onClick }) {
     let className = 'button';
-    if (filter === name) className += ' button--selected';
+    if (isSelected) className += ' button--selected';
     return (
-        <button onClick={() => onChange(name)} className={className}>
+        <button onClick={() => onClick(name)} className={className}>
             {name}
         </button>
     );

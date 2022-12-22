@@ -28,8 +28,8 @@ export default class Task extends Component {
                         created {this.state.created}
                     </span>
                 </label>
-                <Icon type='edit' onEditing={onEditing} />
-                <Icon onDeleted={onDeleted} type='destroy' />
+                <Icon type='edit' onClick={onEditing} />
+                <Icon type='destroy' onClick={onDeleted} />
             </div>
         );
     }
