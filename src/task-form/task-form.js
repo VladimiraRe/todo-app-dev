@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './task-form.css';
 
 export default class TaskForm extends Component {
+    static defaultProps = {
+        startValue: '',
+    };
+
+    static propTypes = {
+        startValue: PropTypes.string,
+        onSubmit: PropTypes.func,
+    };
+
     startValue = this.props.startValue;
 
     state = {

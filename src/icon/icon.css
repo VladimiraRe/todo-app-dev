@@ -25,4 +25,6 @@
 }
 .icon--edit::after {
     content: '✎';
+    display: block;
+    transform: translateY(4px);
 }

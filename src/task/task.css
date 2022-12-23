@@ -36,13 +36,13 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 85px 15px 60px;
+    column-gap: 10px;
 }
 .task__created {
     font-size: 13px;
     color: gray;
 }
 .task__description {
-    word-break: break-all;
     display: block;
     line-height: 1.2;
     transition: color 0.4s;

@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import Icon from '../icon';
 import './task.css';
 
 export default class Task extends Component {
+    static defaultProps = {
+        isDone: false,
+        description: '',
+        isEdit: false,
+    };
+
+    static propTypes = {
+        isDone: PropTypes.bool,
+        description: PropTypes.string,
+        isEdit: PropTypes.bool,
+        onDeleted: PropTypes.func,
+        onCompleted: PropTypes.func,
+        onEditing: PropTypes.func,
+    };
+
     state = {
         created: formatDistanceToNow(this.props.created, {
             includeSeconds: true,
@@ -20,7 +36,7 @@ export default class Task extends Component {
             isEdit,
         } = this.props;
         return (
-            <div className={`task ${isEdit && 'task--editing'}`}>
+            <div className={`task${isEdit ? ' task--editing' : ''}`}>
                 <input
                     onClick={onCompleted}
                     className='task__toggle'
@@ -28,8 +44,8 @@ export default class Task extends Component {
                 />
                 <label>
                     <span
-                        className={`task__description ${
-                            isDone && 'task__description--done'
+                        className={`task__description${
+                            isDone ? ' task__description--done' : ''
                         }`}
                     >
                         {description}

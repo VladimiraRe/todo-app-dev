@@ -2,8 +2,7 @@ import React from 'react';
 import Button from '../button';
 import './tasks-filter.css';
 
-export default function TasksFilter({ onChange, filter }) {
-    const filterNames = ['all', 'active', 'completed'];
+export default function TasksFilter({ onChange, filter, filterNames }) {
     let key = 1;
     const btnsArr = filterNames.map((name) => {
         const isSelected = name === filter ? true : false;
@@ -11,7 +10,7 @@ export default function TasksFilter({ onChange, filter }) {
             <li key={key++} className='tasksFilter__item'>
                 <Button
                     name={name}
-                    onClick={onChange}
+                    onClick={() => onChange(name)}
                     isSelected={isSelected}
                 />
             </li>

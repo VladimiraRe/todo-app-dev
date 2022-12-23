@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AppHeader from '../app-header';
 import TaskList from '../task-list';
 import Footer from '../footer';
@@ -6,6 +7,27 @@ import './todo-app.css';
 
 export default class TodoApp extends Component {
     maxId = 100;
+    filterNames = ['all', 'active', 'completed'];
+
+    static defaultProps = {
+        data: [97, 98, 99].map((id) => ({
+            id: id,
+            description: 'Add your task or edit this one',
+            created: new Date().getTime(),
+            isDone: false,
+        })),
+    };
+
+    static propTypes = {
+        data: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number,
+                description: PropTypes.string,
+                created: PropTypes.number,
+                isDone: PropTypes.bool,
+            })
+        ),
+    };
 
     createTask = (description) => {
         return {
@@ -17,12 +39,8 @@ export default class TodoApp extends Component {
     };
 
     state = {
-        data: [
-            this.createTask('Wake Up'),
-            this.createTask('Drink Coffe'),
-            this.createTask('Learn React'),
-        ],
-        filter: 'all',
+        data: this.props.data,
+        filter: this.filterNames[0],
         edit: false,
     };
 
@@ -87,7 +105,7 @@ export default class TodoApp extends Component {
         const tasksLeft = data.filter((el) => !el.isDone).length;
         return (
             <section className='todoApp'>
-                <AppHeader onAdded={this.addTask} edit={this.state.edit} />
+                <AppHeader onAdded={this.addTask} />
                 <section className='todoApp__main'>
                     <TaskList
                         data={data}
@@ -97,12 +115,14 @@ export default class TodoApp extends Component {
                         onStartOfEditing={this.startEditTask}
                         edit={this.state.edit}
                         filter={filter}
+                        filterNames={this.filterNames}
                     />
                     <Footer
                         onChange={this.changeFilter}
                         filter={filter}
                         onReset={this.deleteCompleted}
                         tasksLeft={tasksLeft}
+                        filterNames={this.filterNames}
                     />
                 </section>
             </section>
