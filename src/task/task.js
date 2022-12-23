@@ -30,10 +30,10 @@ export default class Task extends Component {
         const {
             isDone,
             description,
+            isEdit,
             onDeleted,
             onCompleted,
             onEditing,
-            isEdit,
         } = this.props;
         return (
             <div className={`task${isEdit ? ' task--editing' : ''}`}>

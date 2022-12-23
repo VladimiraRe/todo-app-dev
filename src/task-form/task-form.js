@@ -10,6 +10,7 @@ export default class TaskForm extends Component {
     static propTypes = {
         startValue: PropTypes.string,
         onSubmit: PropTypes.func,
+        onEditing: PropTypes.func,
     };
 
     startValue = this.props.startValue;
@@ -22,7 +23,11 @@ export default class TaskForm extends Component {
         e.preventDefault();
         if (this.state.value === '') return;
         this.props.onSubmit(this.state.value);
-        if (!this.startValue) this.setState({ value: '' });
+        if (!this.startValue) {
+            this.setState({ value: '' });
+        } else {
+            this.props.onEditing(false);
+        }
     };
 
     onChange = (e) => {
@@ -33,6 +38,7 @@ export default class TaskForm extends Component {
         if (e.key === 'Escape') {
             if (this.startValue) {
                 this.props.onSubmit(this.startValue);
+                this.props.onEditing(false);
             } else {
                 if (this.state.value === '') return;
                 this.setState({ value: this.startValue });

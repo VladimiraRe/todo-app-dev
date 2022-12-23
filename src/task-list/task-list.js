@@ -9,18 +9,24 @@ export default class TaskList extends Component {
         data: [],
         filterNames: ['all'],
         filter: 'all',
-        edit: false,
     };
 
     static propTypes = {
         data: PropTypes.array,
         filter: PropTypes.string,
         filterNames: PropTypes.arrayOf(PropTypes.string),
-        edit: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
         onDeleted: PropTypes.func,
         onCompleted: PropTypes.func,
         onEditing: PropTypes.func,
         onStartOfEditing: PropTypes.func,
+    };
+
+    state = {
+        edit: false,
+    };
+
+    toggleEditStatus = (id) => {
+        this.setState({ edit: id });
     };
 
     render() {
@@ -28,11 +34,9 @@ export default class TaskList extends Component {
             data,
             filter,
             filterNames: [all, active, completed],
-            edit,
             onDeleted,
             onCompleted,
             onEditing,
-            onStartOfEditing,
         } = this.props;
         const tasks = data
             .filter(
@@ -43,15 +47,15 @@ export default class TaskList extends Component {
             )
             .map(({ id, ...props }) => {
                 let className = 'task-list__item';
-                let isEdit = edit === id ? true : false;
+                let isEdit = this.state.edit === id ? true : false;
                 return (
                     <li key={id} className={className}>
                         <Task
                             {...props}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
-                            onEditing={() => onStartOfEditing(id)}
                             isEdit={isEdit}
+                            onEditing={() => this.toggleEditStatus(id)}
                         />
                         {isEdit && (
                             <TaskForm
@@ -59,6 +63,7 @@ export default class TaskList extends Component {
                                 onSubmit={(description) =>
                                     onEditing(id, description)
                                 }
+                                onEditing={this.toggleEditStatus}
                             />
                         )}
                     </li>

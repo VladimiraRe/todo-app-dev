@@ -41,17 +41,12 @@ export default class TodoApp extends Component {
     state = {
         data: this.props.data,
         filter: this.filterNames[0],
-        edit: false,
     };
 
     addTask = (description) => {
         this.setState(({ data }) => ({
             data: [...data, this.createTask(description)],
         }));
-    };
-
-    startEditTask = (id) => {
-        this.setState({ edit: id });
     };
 
     editTask = (id, description) => {
@@ -65,7 +60,6 @@ export default class TodoApp extends Component {
                 ],
             };
         });
-        this.startEditTask(false);
     };
 
     deleteTask = (id) => {
@@ -112,8 +106,6 @@ export default class TodoApp extends Component {
                         onDeleted={this.deleteTask}
                         onCompleted={this.completeTask}
                         onEditing={this.editTask}
-                        onStartOfEditing={this.startEditTask}
-                        edit={this.state.edit}
                         filter={filter}
                         filterNames={this.filterNames}
                     />
