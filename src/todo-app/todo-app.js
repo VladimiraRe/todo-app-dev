@@ -63,38 +63,25 @@ export default class TodoApp extends Component {
     };
 
     deleteTask = (id) => {
-        this.setState(({ data, checked }) => {
-            const dataInx = data.findIndex((el) => el.id === id);
-            const checkedInx = checked.findIndex((el) => el === id);
+        this.setState(({ data }) => {
+            const inx = data.findIndex((el) => el.id === id);
             return {
-                data: [...data.slice(0, dataInx), ...data.slice(dataInx + 1)],
-                checked: [...checked.slice(0, checkedInx), ...checked.slice(checkedInx + 1)],
+                data: [...data.slice(0, inx), ...data.slice(inx + 1)],
             };
         });
     };
 
     deleteCompleted = () => {
-        this.setState(({ data, checked }) => {
-            const newData = data.filter((el) => !el.isDone);
-            const newChecked = checked.filter((id) => newData.find((el) => el.id === id) === -1);
-            return { data: newData, checked: newChecked };
+        this.setState(({ data }) => {
+            return { data: data.filter((el) => !el.isDone) };
         });
     };
 
     completeTask = (id) => {
-        this.setState(({ data, checked }) => {
-            const dataInx = data.findIndex((el) => el.id === id);
-            const checkedInx = checked.findIndex((el) => el === id);
+        this.setState(({ data }) => {
+            const inx = data.findIndex((el) => el.id === id);
             return {
-                data: [
-                    ...data.slice(0, dataInx),
-                    { ...data[dataInx], isDone: !data[dataInx].isDone },
-                    ...data.slice(dataInx + 1),
-                ],
-                checked:
-                    checkedInx !== -1
-                        ? [...checked.slice(0, checkedInx), ...checked.slice(checkedInx + 1)]
-                        : [...checked, id],
+                data: [...data.slice(0, inx), { ...data[inx], isDone: !data[inx].isDone }, ...data.slice(inx + 1)],
             };
         });
     };

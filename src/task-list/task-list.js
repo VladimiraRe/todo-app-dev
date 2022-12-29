@@ -10,7 +10,6 @@ export default class TaskList extends Component {
         data: [],
         filterNames: ['all'],
         filter: 'all',
-        checked: [],
         onDeleted: () => null,
         onCompleted: () => null,
         onEditing: () => null,
@@ -27,7 +26,6 @@ export default class TaskList extends Component {
         ),
         filter: PropTypes.string,
         filterNames: PropTypes.arrayOf(PropTypes.string),
-        checked: PropTypes.arrayOf(PropTypes.number),
         onDeleted: PropTypes.func,
         onCompleted: PropTypes.func,
         onEditing: PropTypes.func,
@@ -45,7 +43,6 @@ export default class TaskList extends Component {
         const {
             data,
             filter,
-            checked,
             filterNames: [all, active, completed],
             onEditing,
             onDeleted,
@@ -60,14 +57,12 @@ export default class TaskList extends Component {
             .map(({ id, description, created, isDone }) => {
                 const className = 'task-list__item';
                 const isEdit = edit === id;
-                const isChecked = Boolean(checked.find((el) => el === id));
                 return (
                     <li key={id} className={className}>
                         <Task
                             data={{ id, description, created, isDone }}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
-                            isChecked={isChecked}
                             isEdit={isEdit}
                             onEditing={() => this.toggleEditStatus(id)}
                         />

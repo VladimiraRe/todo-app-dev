@@ -10,7 +10,6 @@ export default class Task extends Component {
         isDone: false,
         description: '',
         isEdit: false,
-        isChecked: false,
         onDeleted: () => null,
         onCompleted: () => null,
         onEditing: () => null,
@@ -20,7 +19,6 @@ export default class Task extends Component {
         isDone: PropTypes.bool,
         description: PropTypes.string,
         isEdit: PropTypes.bool,
-        isChecked: PropTypes.bool,
         onDeleted: PropTypes.func,
         onCompleted: PropTypes.func,
         onEditing: PropTypes.func,
@@ -36,7 +34,6 @@ export default class Task extends Component {
         const {
             data: { id, isDone, description },
             isEdit,
-            isChecked,
             onDeleted,
             onEditing,
             onCompleted,
@@ -49,7 +46,7 @@ export default class Task extends Component {
                     className='task__toggle'
                     type='checkbox'
                     id={`task__toggle${id}`}
-                    checked={isChecked}
+                    checked={isDone}
                 />
                 <label htmlFor={`task__toggle${id}`}>
                     <span className={`task__description${isDone ? ' task__description--done' : ''}`}>
