@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import './button.css';
 
-export default class Button extends Component {
-    static defaultProp = {
+export default class Button extends PureComponent {
+    static defaultProps = {
         name: '',
         isSelected: false,
+        onClick: () => null,
     };
 
     static propTypes = {
@@ -19,7 +20,7 @@ export default class Button extends Component {
         let className = 'button';
         if (isSelected) className += ' button--selected';
         return (
-            <button onClick={onClick} className={className}>
+            <button type='button' onClick={onClick} className={className}>
                 {name}
             </button>
         );

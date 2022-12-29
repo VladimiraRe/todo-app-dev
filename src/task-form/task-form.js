@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import './task-form.css';
 
 export default class TaskForm extends Component {
     static defaultProps = {
         startValue: '',
+        onSubmit: () => null,
+        onEditing: () => null,
     };
 
     static propTypes = {
@@ -47,6 +49,7 @@ export default class TaskForm extends Component {
     };
 
     render() {
+        const { value } = this.state;
         let className = 'task-form__input';
         let placeholder;
         if (this.startValue) {
@@ -57,18 +60,14 @@ export default class TaskForm extends Component {
             placeholder = 'What needs to be done?';
         }
         return (
-            <form
-                onKeyDown={this.onCancellation}
-                onSubmit={(e) => this.onSubmit(e)}
-                className='task-form'
-            >
+            <form onSubmit={(e) => this.onSubmit(e)} className='task-form'>
                 <input
                     type='text'
                     className={className}
-                    value={this.state.value}
+                    value={value}
                     onChange={(e) => this.onChange(e)}
+                    onKeyDown={this.onCancellation}
                     placeholder={placeholder}
-                    autoFocus
                 />
             </form>
         );

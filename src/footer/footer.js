@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+
 import TasksFilter from '../tasks-filter';
 import './footer.css';
 
-export default class Footer extends Component {
+export default class Footer extends PureComponent {
     static defaultProps = {
         filter: 'all',
         filterNames: ['all'],
         tasksLeft: 0,
+        onChange: () => null,
+        onReset: () => null,
     };
 
     static propTypes = {
@@ -19,19 +22,12 @@ export default class Footer extends Component {
     };
 
     render() {
-        const { tasksLeft, onChange, filter, onReset, filterNames } =
-            this.props;
+        const { tasksLeft, onChange, filter, onReset, filterNames } = this.props;
         return (
             <footer className='footer'>
-                <span className='footer__todo-count'>
-                    {tasksLeft} items left
-                </span>
-                <TasksFilter
-                    onChange={onChange}
-                    filter={filter}
-                    filterNames={filterNames}
-                />
-                <button onClick={onReset} className='footer__clear-completed'>
+                <span className='footer__todo-count'>{tasksLeft} items left</span>
+                <TasksFilter onChange={onChange} filter={filter} filterNames={filterNames} />
+                <button type='button' onClick={onReset} className='footer__clear-completed'>
                     Clear completed
                 </button>
             </footer>

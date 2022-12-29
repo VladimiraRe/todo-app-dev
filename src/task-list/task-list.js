@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Task from '../task';
 import TaskForm from '../task-form';
 import './task-list.css';
@@ -9,16 +10,27 @@ export default class TaskList extends Component {
         data: [],
         filterNames: ['all'],
         filter: 'all',
+        checked: [],
+        onDeleted: () => null,
+        onCompleted: () => null,
+        onEditing: () => null,
     };
 
     static propTypes = {
-        data: PropTypes.array,
+        data: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number,
+                description: PropTypes.string,
+                created: PropTypes.number,
+                isDone: PropTypes.bool,
+            })
+        ),
         filter: PropTypes.string,
         filterNames: PropTypes.arrayOf(PropTypes.string),
+        checked: PropTypes.arrayOf(PropTypes.number),
         onDeleted: PropTypes.func,
         onCompleted: PropTypes.func,
         onEditing: PropTypes.func,
-        onStartOfEditing: PropTypes.func,
     };
 
     state = {
@@ -33,36 +45,36 @@ export default class TaskList extends Component {
         const {
             data,
             filter,
+            checked,
             filterNames: [all, active, completed],
+            onEditing,
             onDeleted,
             onCompleted,
-            onEditing,
         } = this.props;
+        const { edit } = this.state;
         const tasks = data
             .filter(
                 (el) =>
-                    (filter === active && !el.isDone) ||
-                    (filter === completed && el.isDone) ||
-                    (filter === all && el)
+                    (filter === active && !el.isDone) || (filter === completed && el.isDone) || (filter === all && el)
             )
-            .map(({ id, ...props }) => {
-                let className = 'task-list__item';
-                let isEdit = this.state.edit === id ? true : false;
+            .map(({ id, description, created, isDone }) => {
+                const className = 'task-list__item';
+                const isEdit = edit === id;
+                const isChecked = Boolean(checked.find((el) => el === id));
                 return (
                     <li key={id} className={className}>
                         <Task
-                            {...props}
+                            data={{ id, description, created, isDone }}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
+                            isChecked={isChecked}
                             isEdit={isEdit}
                             onEditing={() => this.toggleEditStatus(id)}
                         />
                         {isEdit && (
                             <TaskForm
-                                startValue={props.description}
-                                onSubmit={(description) =>
-                                    onEditing(id, description)
-                                }
+                                startValue={description}
+                                onSubmit={(text) => onEditing(id, text)}
                                 onEditing={this.toggleEditStatus}
                             />
                         )}

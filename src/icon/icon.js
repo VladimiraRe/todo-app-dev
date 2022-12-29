@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import './icon.css';
 
-export default class Icon extends Component {
-    static defaultProp = {
+export default class Icon extends PureComponent {
+    static defaultProps = {
         type: '',
+        onClick: () => null,
     };
 
     static propTypes = {
@@ -21,6 +22,8 @@ export default class Icon extends Component {
         if (type === 'destroy') {
             className += ' icon--destroy';
         }
-        return <button onClick={onClick} className={className}></button>;
+        return (
+            <button type='button' onClick={onClick} className={className} aria-label={`Button for ${type} the task`} />
+        );
     }
 }

@@ -1,1 +1,2 @@
-export { default } from './task.js';
+/* eslint-disable no-restricted-exports */
+export { default } from './task';
