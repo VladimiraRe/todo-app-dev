@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Button from '../button';
 import './tasks-filter.css';
 
@@ -14,3 +16,15 @@ export default function TasksFilter({ onChange, filter, filterNames }) {
     });
     return <ul className='tasksFilter'>{btnsArr}</ul>;
 }
+
+TasksFilter.defaultProps = {
+    onChange: () => {},
+    filterNames: [],
+    filter: '',
+};
+
+TasksFilter.propTypes = {
+    onChange: PropTypes.func,
+    filterNames: PropTypes.arrayOf(PropTypes.string),
+    filter: PropTypes.string,
+};
