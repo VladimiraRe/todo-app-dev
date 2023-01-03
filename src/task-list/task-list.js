@@ -60,7 +60,7 @@ export default class TaskList extends Component {
                 return (
                     <li key={id} className={className}>
                         <Task
-                            data={{ id, description, created, isDone }}
+                            data={{ description, created, isDone }}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
                             isEdit={isEdit}

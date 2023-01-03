@@ -68,6 +68,7 @@ export default class TaskForm extends Component {
                     onChange={(e) => this.onChange(e)}
                     onKeyDown={this.onCancellation}
                     placeholder={placeholder}
+                    autoFocus
                 />
             </form>
         );

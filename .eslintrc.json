@@ -54,8 +54,13 @@
         //because it is enabled in plugin:react/recommended
         "react/static-property-placement": ["error", "static public field"], //declared 'defaultProps' inside the class body
         "react/state-in-constructor": [0, "always"], //for using 'state' outside the constructor
-        "react/destructuring-assignment": ["error", "always", { "ignoreClassFields": true}] //destructuring is not required
+        "react/destructuring-assignment": ["error", "always", { "ignoreClassFields": true}], //destructuring is not required
         //in class field declarations
+        "jsx-a11y/no-autofocus": [ 0, { "ignoreNonDOM": true }],
+        "jsx-a11y/label-has-associated-control": [ 2, {
+            "assert": "either",
+            "depth": 3
+        }]
     },
     "settings": {
         "import/resolver": { //settings of eslint-plugin-import

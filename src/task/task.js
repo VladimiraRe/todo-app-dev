@@ -13,9 +13,15 @@ export default class Task extends Component {
         onDeleted: () => null,
         onCompleted: () => null,
         onEditing: () => null,
+        data: {},
     };
 
     static propTypes = {
+        data: PropTypes.shape({
+            description: PropTypes.string,
+            created: PropTypes.number,
+            isDone: PropTypes.bool,
+        }),
         isDone: PropTypes.bool,
         description: PropTypes.string,
         isEdit: PropTypes.bool,
@@ -32,7 +38,7 @@ export default class Task extends Component {
 
     render() {
         const {
-            data: { id, isDone, description },
+            data: { isDone, description },
             isEdit,
             onDeleted,
             onEditing,
@@ -41,19 +47,13 @@ export default class Task extends Component {
         const { created } = this.state;
         return (
             <div className={`task${isEdit ? ' task--editing' : ''}`}>
-                <input
-                    onChange={onCompleted}
-                    className='task__toggle'
-                    type='checkbox'
-                    id={`task__toggle${id}`}
-                    checked={isDone}
-                />
-                <label htmlFor={`task__toggle${id}`}>
+                <label>
+                    <input onChange={onCompleted} className='task__toggle' type='checkbox' checked={isDone} />
                     <span className={`task__description${isDone ? ' task__description--done' : ''}`}>
                         {description}
                     </span>
-                    <span className='task__created'>created {created}</span>
                 </label>
+                <span className='task__created'>created {created}</span>
                 <Icon type='edit' onClick={onEditing} />
                 <Icon type='destroy' onClick={onDeleted} />
             </div>
