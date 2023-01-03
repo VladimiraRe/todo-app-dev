@@ -44,6 +44,7 @@ label > .task__toggle:checked {
 }
 .task label {
     cursor: pointer;
+    flex-grow: 1;
 }
 .task__created {
     font-size: 13px;
