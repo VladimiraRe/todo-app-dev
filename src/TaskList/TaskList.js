@@ -18,7 +18,7 @@ export default class TaskList extends Component {
     static propTypes = {
         data: PropTypes.arrayOf(
             PropTypes.shape({
-                id: PropTypes.number,
+                id: PropTypes.string,
                 description: PropTypes.string,
                 created: PropTypes.number,
                 isDone: PropTypes.bool,
