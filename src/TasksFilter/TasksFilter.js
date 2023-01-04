@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
+import { v1 as uuidv1 } from 'uuid';
 
 import Button from '../Button';
 import './TasksFilter.css';
 
 export default function TasksFilter({ onChange, filter, filterNames }) {
-    let key = 1;
     const btnsArr = filterNames.map((name) => {
         const isSelected = name === filter;
-        key += 1;
         return (
-            <li key={key} className='tasksFilter__item'>
+            <li key={uuidv1()} className='tasksFilter__item'>
                 <Button name={name} onClick={() => onChange(name)} isSelected={isSelected} />
             </li>
         );
