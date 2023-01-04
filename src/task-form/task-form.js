@@ -23,8 +23,9 @@ export default class TaskForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        if (this.state.value === '') return;
-        this.props.onSubmit(this.state.value);
+        const { value } = this.state;
+        if (value === '' || value.split(' ').join('') === '') return;
+        this.props.onSubmit(value);
         if (!this.startValue) {
             this.setState({ value: '' });
         } else {
