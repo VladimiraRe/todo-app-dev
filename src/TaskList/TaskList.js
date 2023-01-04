@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Task from '../task';
-import TaskForm from '../task-form';
-import './task-list.css';
+import Task from '../Task';
+import TaskForm from '../TaskForm';
+import './TaskList.css';
 
 export default class TaskList extends Component {
     static defaultProps = {

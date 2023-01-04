@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 
-import Icon from '../icon';
-import './task.css';
+import Icon from '../Icon';
+import './Task.css';
 
 export default function Task({ data: { isDone, description, created }, isEdit, onDeleted, onEditing, onCompleted }) {
     const distanceToNow = formatDistanceToNow(created, {

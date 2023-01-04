@@ -1,8 +1,8 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import TaskForm from '../task-form';
-import './app-header.css';
+import TaskForm from '../TaskForm';
+import './Header.css';
 
 export default class AppHeader extends PureComponent {
     static propTypes = {

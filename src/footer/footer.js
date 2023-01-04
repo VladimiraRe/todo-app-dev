@@ -1,8 +1,8 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import TasksFilter from '../tasks-filter';
-import './footer.css';
+import TasksFilter from '../TasksFilter';
+import './Footer.css';
 
 export default class Footer extends PureComponent {
     static defaultProps = {

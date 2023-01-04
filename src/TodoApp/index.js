@@ -1,2 +1,2 @@
 /* eslint-disable no-restricted-exports */
-export { default } from './task-list';
+export { default } from './TodoApp';

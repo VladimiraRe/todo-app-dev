@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import './button.css';
+import './Button.css';
 
 export default class Button extends PureComponent {
     static defaultProps = {

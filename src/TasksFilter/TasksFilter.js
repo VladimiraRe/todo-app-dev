@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import Button from '../button';
-import './tasks-filter.css';
+import Button from '../Button';
+import './TasksFilter.css';
 
 export default function TasksFilter({ onChange, filter, filterNames }) {
     let key = 1;

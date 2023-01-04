@@ -1,2 +1,2 @@
 /* eslint-disable no-restricted-exports */
-export { default } from './app-header';
+export { default } from './Header';

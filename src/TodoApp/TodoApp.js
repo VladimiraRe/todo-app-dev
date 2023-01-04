@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AppHeader from '../app-header';
-import TaskList from '../task-list';
-import Footer from '../footer';
-import './todo-app.css';
+import Header from '../Header';
+import TaskList from '../TaskList';
+import Footer from '../Footer';
+import './TodoApp.css';
 
 export default class TodoApp extends Component {
     maxId = 100;
@@ -95,7 +95,7 @@ export default class TodoApp extends Component {
         const tasksLeft = data.filter((el) => !el.isDone).length;
         return (
             <section className='todoApp'>
-                <AppHeader onAdded={this.addTask} />
+                <Header onAdded={this.addTask} />
                 <section className='todoApp__main'>
                     <TaskList
                         data={data}

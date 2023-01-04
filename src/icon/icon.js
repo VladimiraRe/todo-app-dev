@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import './icon.css';
+import './Icon.css';
 
 export default class Icon extends PureComponent {
     static defaultProps = {
