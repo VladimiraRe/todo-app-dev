@@ -48,19 +48,18 @@ export default class TodoApp extends Component {
 
     editTask = (id, description) => {
         this.setState(({ data }) => {
-            const inx = data.findIndex((el) => el.id === id);
             return {
-                data: [...data.slice(0, inx), { ...data[inx], description }, ...data.slice(inx + 1)],
+                data: data.map((el) => {
+                    if (el.id !== id) return el;
+                    return { ...el, description };
+                }),
             };
         });
     };
 
     deleteTask = (id) => {
         this.setState(({ data }) => {
-            const inx = data.findIndex((el) => el.id === id);
-            return {
-                data: [...data.slice(0, inx), ...data.slice(inx + 1)],
-            };
+            return { data: data.filter((el) => el.id !== id) };
         });
     };
 
@@ -72,9 +71,11 @@ export default class TodoApp extends Component {
 
     completeTask = (id) => {
         this.setState(({ data }) => {
-            const inx = data.findIndex((el) => el.id === id);
             return {
-                data: [...data.slice(0, inx), { ...data[inx], isDone: !data[inx].isDone }, ...data.slice(inx + 1)],
+                data: data.map((el) => {
+                    if (el.id !== id) return el;
+                    return { ...el, isDone: !el.isDone };
+                }),
             };
         });
     };
