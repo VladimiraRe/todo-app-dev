@@ -19,8 +19,8 @@ export default function TasksFilter({ onChange, filter, filterNames }) {
 
 TasksFilter.defaultProps = {
     onChange: () => {},
-    filterNames: [],
-    filter: '',
+    filterNames: ['all'],
+    filter: 'all',
 };
 
 TasksFilter.propTypes = {
