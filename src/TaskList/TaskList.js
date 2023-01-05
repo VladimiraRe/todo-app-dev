@@ -55,10 +55,9 @@ export default class TaskList extends Component {
                     (filter === active && !el.isDone) || (filter === completed && el.isDone) || (filter === all && el)
             )
             .map(({ id, description, created, isDone }) => {
-                const className = 'task-list__item';
                 const isEdit = edit === id;
                 return (
-                    <li key={id} className={className}>
+                    <li key={id} className='task-list__item'>
                         <Task
                             data={{ description, created, isDone }}
                             onDeleted={() => onDeleted(id)}
