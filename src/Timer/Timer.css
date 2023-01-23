@@ -1,0 +1,12 @@
+.timer {
+    display: flex;
+    column-gap: 10px;
+}
+.timer__display {
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: 1.4em;
+    color: gray;
+    max-width: 100px;
+}

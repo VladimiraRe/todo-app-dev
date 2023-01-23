@@ -1,7 +1,7 @@
 .task {
     display: flex;
-    gap: 10px;
-    padding: 15px 85px 15px 60px;
+    column-gap: 20px;
+    padding: 15px 10px 15px 60px;
     align-items: center;
     justify-content: space-between;
     position: relative;
@@ -49,6 +49,7 @@ label > .task__toggle:checked {
 .task__created {
     font-size: 13px;
     color: gray;
+    max-width: 100px;
 }
 .task__description {
     display: block;
@@ -63,4 +64,8 @@ label > .task__toggle:checked {
 }
 .task--editing {
     display: none;
+}
+.task__wrap {
+    display: flex;
+    column-gap: 10px;
 }

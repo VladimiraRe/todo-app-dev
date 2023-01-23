@@ -13,6 +13,7 @@ export default class TaskList extends Component {
         onDeleted: () => null,
         onCompleted: () => null,
         onEditing: () => null,
+        onStopTimer: () => null,
     };
 
     static propTypes = {
@@ -22,6 +23,7 @@ export default class TaskList extends Component {
                 description: PropTypes.string,
                 created: PropTypes.number,
                 isDone: PropTypes.bool,
+                timer: PropTypes.number,
             })
         ),
         filter: PropTypes.string,
@@ -29,6 +31,7 @@ export default class TaskList extends Component {
         onDeleted: PropTypes.func,
         onCompleted: PropTypes.func,
         onEditing: PropTypes.func,
+        onStopTimer: PropTypes.func,
     };
 
     state = {
@@ -47,6 +50,7 @@ export default class TaskList extends Component {
             onEditing,
             onDeleted,
             onCompleted,
+            onStopTimer,
         } = this.props;
         const { edit } = this.state;
         const tasks = data
@@ -54,21 +58,23 @@ export default class TaskList extends Component {
                 (el) =>
                     (filter === active && !el.isDone) || (filter === completed && el.isDone) || (filter === all && el)
             )
-            .map(({ id, description, created, isDone }) => {
+            .map(({ id, description, created, isDone, timer }) => {
                 const isEdit = edit === id;
                 return (
                     <li key={id} className='task-list__item'>
                         <Task
                             data={{ description, created, isDone }}
+                            timer={timer}
                             onDeleted={() => onDeleted(id)}
                             onCompleted={() => onCompleted(id)}
                             isEdit={isEdit}
                             onEditing={() => this.toggleEditStatus(id)}
+                            onStopTimer={(value) => onStopTimer(id, value)}
                         />
                         {isEdit && (
                             <TaskForm
-                                startValue={description}
-                                onSubmit={(text) => onEditing(id, text)}
+                                startValue={{ description, timer }}
+                                onSubmit={(obj) => onEditing(id, obj)}
                                 onEditing={this.toggleEditStatus}
                             />
                         )}

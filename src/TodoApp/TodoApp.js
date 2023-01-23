@@ -8,17 +8,17 @@ import Footer from '../Footer';
 import './TodoApp.css';
 
 export default class TodoApp extends Component {
-    static createTask = (description) => {
+    static createTask = (obj) => {
         return {
             id: uuidv1(),
-            description,
             created: new Date().getTime(),
             isDone: false,
+            ...obj,
         };
     };
 
     static defaultProps = {
-        data: [1, 2, 3].map(() => TodoApp.createTask('Add your task or edit this one')),
+        data: [1, 2, 3].map(() => TodoApp.createTask({ description: 'Add your task or edit this one', timer: 745 })),
     };
 
     static propTypes = {
@@ -28,6 +28,7 @@ export default class TodoApp extends Component {
                 description: PropTypes.string,
                 created: PropTypes.number,
                 isDone: PropTypes.bool,
+                timer: PropTypes.number,
             })
         ),
     };
@@ -40,18 +41,18 @@ export default class TodoApp extends Component {
         checked: [],
     };
 
-    addTask = (description) => {
+    addTask = (obj) => {
         this.setState(({ data }) => ({
-            data: [...data, TodoApp.createTask(description)],
+            data: [...data, TodoApp.createTask(obj)],
         }));
     };
 
-    editTask = (id, description) => {
+    editTask = (id, obj) => {
         this.setState(({ data }) => {
             return {
                 data: data.map((el) => {
                     if (el.id !== id) return el;
-                    return { ...el, description };
+                    return { ...el, ...obj };
                 }),
             };
         });
@@ -72,9 +73,9 @@ export default class TodoApp extends Component {
     completeTask = (id) => {
         this.setState(({ data }) => {
             return {
-                data: data.map((el) => {
-                    if (el.id !== id) return el;
-                    return { ...el, isDone: !el.isDone };
+                data: data.map((task) => {
+                    if (task.id !== id) return task;
+                    return { ...task, isDone: !task.isDone };
                 }),
             };
         });
@@ -82,6 +83,17 @@ export default class TodoApp extends Component {
 
     changeFilter = (value) => {
         this.setState({ filter: value });
+    };
+
+    changeTimer = (id, value) => {
+        this.setState(({ data }) => {
+            return {
+                data: data.map((task) => {
+                    if (task.id !== id) return task;
+                    return { ...task, timer: value };
+                }),
+            };
+        });
     };
 
     render() {
@@ -96,6 +108,7 @@ export default class TodoApp extends Component {
                         onDeleted={this.deleteTask}
                         onCompleted={this.completeTask}
                         onEditing={this.editTask}
+                        onStopTimer={this.changeTimer}
                         filter={filter}
                         filterNames={this.filterNames}
                         checked={checked}
