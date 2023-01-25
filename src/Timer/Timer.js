@@ -9,12 +9,14 @@ export default class Timer extends Component {
     static defaultProps = {
         seconds: null,
         isEdit: false,
+        isDone: false,
         onStopTimer: () => null,
     };
 
     static propTypes = {
         seconds: PropTypes.number,
         isEdit: PropTypes.bool,
+        isDone: PropTypes.bool,
         onStopTimer: PropTypes.func,
     };
 
@@ -52,6 +54,11 @@ export default class Timer extends Component {
                     if (seconds === 0) {
                         clearInterval(this.interval);
                         this.props.onStopTimer(0);
+                        return { seconds, isTimerOn: false };
+                    }
+                    if (this.props.isDone) {
+                        clearInterval(this.interval);
+                        this.props.onStopTimer(seconds);
                         return { seconds, isTimerOn: false };
                     }
                     return { seconds };

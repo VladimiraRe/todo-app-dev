@@ -74,6 +74,7 @@ export default class TaskForm extends Component {
         const { name, value } = e.target;
         let res;
         if (name !== 'description' && value.search(/[^0-9]/) !== -1) return;
+        if (name === 'hours' && value > 999999999) return;
         if (name === 'seconds' || name === 'minutes') {
             const newValue = value.length === 1 ? `0${value}` : value.slice(-2);
             res = { [name]: newValue > 60 ? `0${newValue.slice(-1)}` : newValue };
@@ -164,7 +165,7 @@ export default class TaskForm extends Component {
                         value={hours || ''}
                         onChange={(e) => this.onChange(e)}
                         onKeyDown={this.onCancellation}
-                        style={hours ? { width: `${(hours.length + 1) * 11}px` } : null}
+                        style={hours ? { width: `${(String(hours).length + 1) * 11}px` } : null}
                     />
                     <span className={`task-form__colon${hours ? ' task-form__colon--timer' : ''}`}>:</span>
                     <input

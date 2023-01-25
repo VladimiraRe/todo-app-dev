@@ -24,7 +24,7 @@ export default function Task({
                 <input onChange={onCompleted} className='task__toggle' type='checkbox' checked={isDone} />
                 <span className={`task__description${isDone ? ' task__description--done' : ''}`}>{description}</span>
             </label>
-            {timer !== null && <Timer isEdit={isEdit} onStopTimer={onStopTimer} seconds={timer} />}
+            {timer !== null && <Timer isEdit={isEdit} onStopTimer={onStopTimer} seconds={timer} isDone={isDone} />}
             <span className='task__created'>created {distanceToNow}</span>
             <span className='task__wrap'>
                 <Icon type='edit' onClick={onEditing} />
