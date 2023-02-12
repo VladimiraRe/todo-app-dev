@@ -4,10 +4,12 @@
     font-size: 34px;
     color: #cc9a9a;
     transition: color 0.2s ease-out;
-    cursor: pointer;
     height: 20px;
 }
-.icon:hover {
+.icon:not([disabled]) {
+    cursor: pointer;
+}
+.icon:hover:not([disabled]) {
     color: #af5b5e;
 }
 .icon--destroy::after {
