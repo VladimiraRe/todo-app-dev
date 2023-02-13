@@ -1,93 +1,60 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 import Icon from '../Icon';
 import './Timer.css';
 
-export default class Timer extends Component {
-    static defaultProps = {
-        seconds: null,
-        isEdit: false,
-        isDone: false,
-        onStopTimer: () => null,
-    };
+export default function Timer({ seconds, isEdit, isDone, onStopTimer }) {
+    const [sec, setSec] = useState(seconds);
+    const [isTimerOn, setIsTimerOn] = useState(false);
+    const timer = useRef(null);
 
-    static propTypes = {
-        seconds: PropTypes.number,
-        isEdit: PropTypes.bool,
-        isDone: PropTypes.bool,
-        onStopTimer: PropTypes.func,
-    };
+    useEffect(() => setSec(seconds), [seconds]);
 
-    state = {
-        seconds: this.props.seconds,
-        isTimerOn: false,
-    };
-
-    componentDidUpdate({ seconds: prevPropsSeconds, isEdit: prevPropsIsEdit }) {
-        const { seconds, isEdit } = this.props;
-        if (seconds !== prevPropsSeconds) {
-            this.setState({ seconds });
+    useEffect(() => {
+        if (isTimerOn && sec && !isDone && !timer.current && !isEdit) {
+            timer.current = setInterval(() => setSec((prevSec) => prevSec - 1), 1000);
         }
-        if (isEdit !== prevPropsIsEdit && isEdit) {
-            this.stopTimer();
+        if ((!isTimerOn && timer.current) || (isTimerOn && (isEdit || sec === 0 || isDone))) {
+            clearInterval(timer.current);
+            timer.current = null;
+            setIsTimerOn(false);
+            onStopTimer(sec);
         }
-    }
+    }, [isTimerOn, isEdit, sec, isDone, onStopTimer]);
 
-    componentWillUnmount() {
-        const { seconds, isTimerOn } = this.state;
-        if (isTimerOn) {
-            clearInterval(this.interval);
-            const { onStopTimer } = this.props;
-            onStopTimer(seconds);
-        }
-    }
+    useEffect(() => {
+        return () => {
+            if (timer.current) clearInterval(timer.current);
+        };
+    }, []);
 
-    runTimer = () => {
-        if (!this.state.seconds) return;
-        this.setState({ isTimerOn: true });
-        this.interval = setInterval(
-            () =>
-                this.setState(({ seconds: prevSec }) => {
-                    const seconds = prevSec - 1;
-                    if (seconds === 0) {
-                        clearInterval(this.interval);
-                        this.props.onStopTimer(0);
-                        return { seconds, isTimerOn: false };
-                    }
-                    if (this.props.isDone) {
-                        clearInterval(this.interval);
-                        this.props.onStopTimer(seconds);
-                        return { seconds, isTimerOn: false };
-                    }
-                    return { seconds };
-                }),
-            1000
-        );
-    };
+    let displayTimer = format(new Date(2014, 6, 2, 0, 0, sec), 'mm:ss');
+    displayTimer = sec >= 3600 ? `${Math.trunc(sec / 3600)}:${displayTimer}` : `0:${displayTimer}`;
 
-    stopTimer = () => {
-        clearInterval(this.interval);
-        this.setState({ isTimerOn: false });
-        this.props.onStopTimer(this.state.seconds);
-    };
-
-    render() {
-        const { seconds, isTimerOn } = this.state;
-        const { isDone } = this.props;
-        let timer = format(new Date(2014, 6, 2, 0, 0, seconds), 'mm:ss');
-        timer = seconds >= 3600 ? `${Math.trunc(seconds / 3600)}:${timer}` : `0:${timer}`;
-
-        return (
-            <span className='timer'>
-                <span className='timer__display'>{timer}</span>
-                {isTimerOn ? (
-                    <Icon type='pause' disabled={!isTimerOn || !seconds || isDone} onClick={this.stopTimer} />
-                ) : (
-                    <Icon type='play' disabled={isTimerOn || !seconds || isDone} onClick={this.runTimer} />
-                )}
-            </span>
-        );
-    }
+    return (
+        <span className='timer'>
+            <span className='timer__display'>{displayTimer}</span>
+            {isTimerOn ? (
+                <Icon type='pause' disabled={!isTimerOn || !sec || isDone} onClick={() => setIsTimerOn(false)} />
+            ) : (
+                <Icon type='play' disabled={isTimerOn || !sec || isDone} onClick={() => setIsTimerOn(true)} />
+            )}
+        </span>
+    );
 }
+
+Timer.defaultProps = {
+    seconds: null,
+    isEdit: false,
+    isDone: false,
+    onStopTimer: () => null,
+};
+
+Timer.propTypes = {
+    seconds: PropTypes.number,
+    isEdit: PropTypes.bool,
+    isDone: PropTypes.bool,
+    onStopTimer: PropTypes.func,
+};

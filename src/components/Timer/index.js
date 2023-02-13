@@ -1,2 +1,3 @@
-// eslint-disable-next-line no-restricted-exports
-export { default } from './Timer';
+import Timer from './Timer';
+
+export default Timer;
