@@ -52,7 +52,10 @@ export default function TodoApp({ startData }) {
         );
     }, []);
 
-    const tasksLeft = data.filter((el) => !el.isDone).length;
+    const doneTasks = data.filter((el) => el.isDone).length;
+    const tasksLeft = data.length - doneTasks;
+    const isCanDelete = doneTasks === 0;
+
     return (
         <section className='todoApp'>
             <Header onAdded={addTask} />
@@ -72,6 +75,7 @@ export default function TodoApp({ startData }) {
                     onReset={deleteCompleted}
                     tasksLeft={tasksLeft}
                     filterNames={filterNames}
+                    disabled={isCanDelete}
                 />
             </section>
         </section>

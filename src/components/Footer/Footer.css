@@ -32,13 +32,13 @@
 .footer__todo-count strong {
     font-weight: 300;
 }
-.footer__clear-completed,
-.footer__clear-completed:active {
+.footer__clear-completed:not([disabled]),
+.footer__clear-completed:active:not([disabled]) {
     position: relative;
     line-height: 20px;
     text-decoration: none;
     cursor: pointer;
 }
-.footer__clear-completed:hover {
+.footer__clear-completed:hover:not([disabled]) {
     text-decoration: underline;
 }
