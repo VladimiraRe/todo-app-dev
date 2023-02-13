@@ -60,7 +60,18 @@
         "jsx-a11y/label-has-associated-control": [ 2, {
             "assert": "either",
             "depth": 3
-        }]
+        }],
+        //allow _ to indicate “private” members of objects
+        "no-underscore-dangle": "off",
+        //allow to use function before the function declaration because function declarations are hoisted
+        "no-use-before-define": ["error", {
+            "functions": false,
+            "classes": true,
+            "variables": true,
+            "allowNamedExports": false
+        }],
+        //allow unary operators ++ and -- in the afterthought (final expression) of a for loop
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     },
     "settings": {
         "import/resolver": { //settings of eslint-plugin-import
