@@ -1,2 +1,3 @@
-/* eslint-disable no-restricted-exports */
-export { default } from './Icon';
+import { memoIcon } from './Icon';
+
+export default memoIcon;
