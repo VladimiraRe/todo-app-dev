@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 
-import Icon from '../Icon';
 import Timer from '../Timer';
+import TaskIcons from '../TaskIcons';
 import './Task.css';
 
 export default function Task({
@@ -26,10 +26,7 @@ export default function Task({
             </label>
             {timer !== null && <Timer isEdit={isEdit} onStopTimer={onStopTimer} seconds={timer} isDone={isDone} />}
             <span className='task__created'>created {distanceToNow}</span>
-            <span className='task__wrap'>
-                <Icon type='edit' onClick={onEditing} />
-                <Icon type='destroy' onClick={onDeleted} />
-            </span>
+            <TaskIcons onEditing={onEditing} onDeleted={onDeleted} />
         </div>
     );
 }

@@ -65,7 +65,3 @@ label > .task__toggle:checked {
 .task--editing {
     display: none;
 }
-.task__wrap {
-    display: flex;
-    column-gap: 10px;
-}
