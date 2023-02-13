@@ -1,2 +1,3 @@
-/* eslint-disable no-restricted-exports */
-export { default } from './Button';
+import Button from './Button';
+
+export default Button;

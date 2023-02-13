@@ -29,5 +29,5 @@ Icon.propTypes = {
     disabled: PropTypes.bool,
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export const memoIcon = React.memo(Icon);
+const memoIcon = React.memo(Icon);
+export default memoIcon;

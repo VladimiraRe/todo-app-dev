@@ -1,3 +1,3 @@
-import { memoIcon } from './Icon';
+import memoIcon from './Icon';
 
 export default memoIcon;
