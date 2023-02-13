@@ -1,2 +1,3 @@
-/* eslint-disable no-restricted-exports */
-export { default } from './TodoApp';
+import TodoApp from './TodoApp';
+
+export default TodoApp;
