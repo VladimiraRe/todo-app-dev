@@ -1,2 +1,3 @@
-/* eslint-disable no-restricted-exports */
-export { default } from './TaskForm';
+import TaskForm from './TaskForm';
+
+export default TaskForm;

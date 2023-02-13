@@ -37,7 +37,7 @@ export default function TaskList({
                         <TaskForm
                             startValue={{ description, timer }}
                             onSubmit={(obj) => onEditing(id, obj)}
-                            onEditing={() => setEdit(false)}
+                            finishEditing={() => setEdit(false)}
                         />
                     )}
                 </li>

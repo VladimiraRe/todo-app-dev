@@ -1,191 +1,178 @@
-import { Component } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-// import { format } from 'date-fns';
 
 import './TaskForm.css';
 
-export default class TaskForm extends Component {
-    static defaultProps = {
-        startValue: { description: '', timer: null },
-        onSubmit: () => null,
-        onEditing: () => null,
-    };
+export default function TaskForm({ startValue, onSubmit, finishEditing }) {
+    const secIn = useMemo(() => ({ hour: 3600, minute: 60 }), []);
 
-    static propTypes = {
-        startValue: PropTypes.shape({
-            description: PropTypes.string,
-            timer: PropTypes.number,
-        }),
-        onSubmit: PropTypes.func,
-        onEditing: PropTypes.func,
-    };
+    const [description, setDescription] = useState('');
+    const [timer, setTimer] = useState({ hours: null, minutes: null, seconds: null });
 
-    secIn = { hour: 3600, minute: 60 };
-
-    startValue = this.props.startValue;
-
-    state = {
-        description: '',
-    };
-
-    componentDidMount() {
-        const { startValue } = this.props;
+    useEffect(() => {
         if (startValue.description) {
-            this.setState({
-                ...this.formatSecToTimer(startValue.timer),
-                description: startValue.description,
-            });
+            setDescription(startValue.description);
         }
-    }
+    }, [startValue.description]);
 
-    componentDidUpdate({ startValue: { timer: prevPropsTimer } }) {
-        const {
-            startValue: { timer },
-        } = this.props;
-        if (timer !== prevPropsTimer) {
-            this.startValue.timer = timer;
-            this.setState({ ...this.formatSecToTimer(timer) });
-        }
-    }
+    useEffect(() => {
+        setTimer(formatSecToTimer(startValue.timer));
 
-    onSubmit = (e) => {
-        e.preventDefault();
+        function formatSecToTimer(sec) {
+            if (sec === null) return { hours: null, minutes: null, seconds: null };
+            if (sec === 0) return { hours: null, minutes: null, seconds: null };
 
-        const { description: startDescr, timer: startTimer } = this.startValue;
-        const { description, ...timerProps } = this.state;
-        let timer = this.formatTimerToSec(timerProps);
-
-        if (description === '' || description.split(' ').join('') === '') return;
-        if (!timer) timer = null;
-
-        const newValue = {};
-        if (description !== startDescr) newValue.description = description;
-        if (timer !== startTimer) newValue.timer = timer;
-        if (Object.keys(newValue).length !== 0) this.props.onSubmit(newValue);
-
-        if (!startDescr) {
-            this.setState({ description: '', hours: null, minutes: null, seconds: null });
-        } else {
-            this.props.onEditing(false);
-        }
-    };
-
-    onChange = (e) => {
-        const { name, value } = e.target;
-        let res;
-        if (name !== 'description' && value.search(/[^0-9]/) !== -1) return;
-        if (name === 'hours' && value > 999999999) return;
-        if (name === 'seconds' || name === 'minutes') {
-            const newValue = value.length === 1 ? `0${value}` : value.slice(-2);
-            res = { [name]: newValue > 60 ? `0${newValue.slice(-1)}` : newValue };
-        } else res = { [name]: value };
-        this.setState(res);
-    };
-
-    onCancellation = (e) => {
-        if (e.key === 'Escape') {
-            if (this.startValue.description) {
-                const { description, timer } = this.startValue;
-                this.props.onSubmit({ description, timer });
-                this.props.onEditing(false);
+            let seconds;
+            let minutes;
+            let hours;
+            if (sec >= secIn.hour) {
+                hours = Math.trunc(sec / secIn.hour);
+                seconds = sec % secIn.hour;
+                minutes = Math.trunc(seconds / secIn.minute);
+                seconds %= secIn.minute;
+            } else if (sec >= secIn.minute) {
+                minutes = Math.trunc(sec / secIn.minute);
+                seconds = sec % secIn.minute;
+                hours = null;
             } else {
-                const { description, ...timerProps } = this.state;
-                if (description === '' && !Object.keys(timerProps).find((el) => el !== null)) return;
-                this.setState({ description: '', hours: null, minutes: null, seconds: null });
+                hours = null;
+                minutes = 0;
+                seconds = sec;
             }
-        }
-    };
 
-    formatTimerToSec = (obj) => {
+            if (minutes < 10) minutes = `0${minutes}`;
+            if (seconds < 10) seconds = `0${seconds}`;
+
+            return { hours, minutes, seconds };
+        }
+    }, [startValue.timer, secIn.hour, secIn.minute]);
+
+    function formatTimerToSec(obj) {
         let { hours, minutes, seconds } = obj;
         if (hours === null && minutes === null && seconds === null) return null;
         hours = +hours || 0;
         minutes = +minutes || 0;
         seconds = +seconds || 0;
 
-        return hours * this.secIn.hour + minutes * this.secIn.minute + seconds;
-    };
-
-    formatSecToTimer = (sec) => {
-        if (sec === null) return { hours: null, minutes: null, seconds: null };
-        if (sec === 0) return { hours: null, minutes: null, seconds: null };
-
-        let seconds;
-        let minutes;
-        let hours;
-        if (sec >= this.secIn.hour) {
-            hours = Math.trunc(sec / this.secIn.hour);
-            seconds = sec % this.secIn.hour;
-            minutes = Math.trunc(seconds / this.secIn.minute);
-            seconds %= this.secIn.minute;
-        } else if (sec >= this.secIn.minute) {
-            minutes = Math.trunc(sec / this.secIn.minute);
-            seconds = sec % this.secIn.minute;
-            hours = null;
-        } else {
-            hours = null;
-            minutes = 0;
-            seconds = sec;
-        }
-
-        if (minutes < 10) minutes = `0${minutes}`;
-        if (seconds < 10) seconds = `0${seconds}`;
-
-        return { hours, minutes, seconds };
-    };
-
-    render() {
-        const { description, hours, minutes, seconds } = this.state;
-        let className = 'task-form';
-        let placeholder;
-
-        if (this.startValue.description) {
-            className += ' task-form--edit';
-            placeholder = 'Edditing task';
-        } else {
-            className += ' task-form--new';
-            placeholder = 'What needs to be done?';
-        }
-
-        return (
-            <form onSubmit={(e) => this.onSubmit(e)} className={className}>
-                <input
-                    name='description'
-                    type='text'
-                    value={description}
-                    onChange={(e) => this.onChange(e)}
-                    onKeyDown={this.onCancellation}
-                    placeholder={placeholder}
-                    autoFocus
-                />
-                <span className='task-form__timer'>
-                    <input
-                        name='hours'
-                        placeholder='Hrs'
-                        value={hours || ''}
-                        onChange={(e) => this.onChange(e)}
-                        onKeyDown={this.onCancellation}
-                        style={hours ? { width: `${(String(hours).length + 1) * 11}px` } : null}
-                    />
-                    <span className={`task-form__colon${hours ? ' task-form__colon--timer' : ''}`}>:</span>
-                    <input
-                        name='minutes'
-                        placeholder='Min'
-                        value={minutes || ''}
-                        onChange={(e) => this.onChange(e)}
-                        onKeyDown={this.onCancellation}
-                    />
-                    <span className={`task-form__colon${seconds ? ' task-form__colon--timer' : ''}`}>:</span>
-                    <input
-                        name='seconds'
-                        placeholder='Sec'
-                        value={seconds || ''}
-                        onChange={(e) => this.onChange(e)}
-                        onKeyDown={this.onCancellation}
-                    />
-                </span>
-                <input type='submit' />
-            </form>
-        );
+        return hours * secIn.hour + minutes * secIn.minute + seconds;
     }
+
+    function resetState() {
+        setDescription('');
+        setTimer({ hours: null, minutes: null, seconds: null });
+    }
+
+    function newOnSubmit(e) {
+        e.preventDefault();
+
+        const { description: startDescr, timer: startTimerInSec } = startValue;
+        let timerInSec = formatTimerToSec(timer);
+
+        if (description === '' || description.split(' ').join('') === '') return;
+        if (!timerInSec) timerInSec = null;
+
+        const newValue = {};
+        if (description !== startDescr) newValue.description = description;
+        if (timerInSec !== startTimerInSec) newValue.timer = timerInSec;
+        if (Object.keys(newValue).length !== 0) onSubmit(newValue);
+
+        if (!startDescr) {
+            resetState();
+        } else {
+            finishEditing();
+        }
+    }
+
+    function onChange(e) {
+        const { name, value } = e.target;
+        if (name === 'description') return setDescription(value);
+        if (value.search(/[^0-9]/) !== -1) return false;
+        if (name === 'hours' && value > 999999999) return false;
+        let res;
+        if (name === 'seconds' || name === 'minutes') {
+            const newValue = value.length === 1 ? `0${value}` : value.slice(-2);
+            res = { [name]: newValue > 60 ? `0${newValue.slice(-1)}` : newValue };
+        } else res = { [name]: value };
+        return setTimer((oldTimer) => ({ ...oldTimer, ...res }));
+    }
+
+    function onCancellation(e) {
+        if (e.key === 'Escape') {
+            if (startValue.description) {
+                const { description: startDescr, timer: startTimer } = startValue;
+                onSubmit({ startDescr, startTimer });
+                finishEditing();
+            } else {
+                if (description === '' && !Object.keys(timer).find((el) => el !== null)) return;
+                resetState();
+            }
+        }
+    }
+
+    let className = 'task-form';
+    let placeholder;
+
+    if (startValue.description) {
+        className += ' task-form--edit';
+        placeholder = 'Edditing task';
+    } else {
+        className += ' task-form--new';
+        placeholder = 'What needs to be done?';
+    }
+
+    return (
+        <form onSubmit={(e) => newOnSubmit(e)} className={className}>
+            <input
+                name='description'
+                type='text'
+                value={description}
+                onChange={(e) => onChange(e)}
+                onKeyDown={onCancellation}
+                placeholder={placeholder}
+                autoFocus
+            />
+            <span className='task-form__timer'>
+                <input
+                    name='hours'
+                    placeholder='Hrs'
+                    value={timer.hours || ''}
+                    onChange={(e) => onChange(e)}
+                    onKeyDown={onCancellation}
+                    style={timer.hours ? { width: `${(String(timer.hours).length + 1) * 11}px` } : null}
+                />
+                <span className={`task-form__colon${timer.hours ? ' task-form__colon--timer' : ''}`}>:</span>
+                <input
+                    name='minutes'
+                    placeholder='Min'
+                    value={timer.minutes || ''}
+                    onChange={(e) => onChange(e)}
+                    onKeyDown={onCancellation}
+                />
+                <span className={`task-form__colon${timer.seconds ? ' task-form__colon--timer' : ''}`}>:</span>
+                <input
+                    name='seconds'
+                    placeholder='Sec'
+                    value={timer.seconds || ''}
+                    onChange={(e) => onChange(e)}
+                    onKeyDown={onCancellation}
+                />
+            </span>
+            <input type='submit' />
+        </form>
+    );
 }
+
+TaskForm.defaultProps = {
+    startValue: { description: '', timer: null },
+    onSubmit: () => null,
+    finishEditing: () => null,
+};
+
+TaskForm.propTypes = {
+    startValue: PropTypes.shape({
+        description: PropTypes.string,
+        timer: PropTypes.number,
+    }),
+    onSubmit: PropTypes.func,
+    finishEditing: PropTypes.func,
+};
