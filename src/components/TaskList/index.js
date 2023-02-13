@@ -1,2 +1,3 @@
-/* eslint-disable no-restricted-exports */
-export { default } from './TaskList';
+import TaskList from './TaskList';
+
+export default TaskList;
