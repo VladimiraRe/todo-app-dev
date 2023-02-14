@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import TasksFilter from '../TasksFilter';
+import Button from '../Button';
 import './Footer.css';
 
 export default function Footer({ filter, filterNames, tasksLeft, onChange, onReset, disabled }) {
@@ -8,9 +9,12 @@ export default function Footer({ filter, filterNames, tasksLeft, onChange, onRes
         <footer className='footer'>
             <span className='footer__todo-count'>{tasksLeft} items left</span>
             <TasksFilter onChange={onChange} filter={filter} filterNames={filterNames} />
-            <button type='button' onClick={onReset} disabled={disabled} className='footer__clear-completed'>
-                Clear completed
-            </button>
+            <Button
+                name='Clear completed'
+                onClick={onReset}
+                disabled={disabled}
+                additionalСlass='footer__clear-completed'
+            />
         </footer>
     );
 }

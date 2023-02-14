@@ -14,3 +14,12 @@
     display: inline;
     cursor: default;
 }
+.tasksFilter__item > button {
+    display: inline-block;
+    color: inherit;
+    margin: 3px;
+    padding: 3px 7px;
+}
+.tasksFilter__item > button:hover {
+    border-color: rgba(175, 47, 47, 0.1);
+}

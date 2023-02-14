@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
-import { formatDistanceToNow } from 'date-fns';
 
 import Timer from '../Timer';
-import TaskIcons from '../TaskIcons';
+
+import TaskIcons from './TaskIcons';
+import TaskLabel from './TaskLabel';
+import TaskCreationTime from './TaskCreationTime';
 import './Task.css';
 
 export default function Task({
@@ -14,18 +16,11 @@ export default function Task({
     onCompleted,
     onStopTimer,
 }) {
-    const distanceToNow = formatDistanceToNow(created, {
-        includeSeconds: true,
-    });
-
     return (
         <div className={`task${isEdit ? ' task--editing' : ''}`}>
-            <label>
-                <input onChange={onCompleted} className='task__toggle' type='checkbox' checked={isDone} />
-                <span className={`task__description${isDone ? ' task__description--done' : ''}`}>{description}</span>
-            </label>
+            <TaskLabel description={description} isDone={isDone} onCompleted={onCompleted} />
             {timer !== null && <Timer isEdit={isEdit} onStopTimer={onStopTimer} seconds={timer} isDone={isDone} />}
-            <span className='task__created'>created {distanceToNow}</span>
+            {created && <TaskCreationTime created={created} />}
             <TaskIcons onEditing={onEditing} onDeleted={onDeleted} />
         </div>
     );

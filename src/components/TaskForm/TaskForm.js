@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import './TaskForm.css';
-import useTaskForm from './useTaskForm';
+import useTaskForm from './hooks/useTaskForm';
 import TaskFormTimer from './TaskFormTimer';
 import TaskFormWrap from './TaskFormWrap';
 

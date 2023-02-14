@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import useTimer from '../../hooks/useTimer';
-import TimerIcons from '../TimerIcons';
+import useTimer from './hooks/useTimer';
+import TimerIcons from './TimerIcons';
 import './Timer.css';
 
 export default function Timer({ seconds, isEdit, isDone, onStopTimer }) {

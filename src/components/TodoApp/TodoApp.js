@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 
-import useData from '../../hooks/useData';
-import useFilter from '../../hooks/useFilter';
 import Header from '../Header';
 import TaskList from '../TaskList';
 import Footer from '../Footer';
+
+import useData from './hooks/useData';
+import useFilter from './hooks/useFilter';
 import './TodoApp.css';
 
 export default function TodoApp({ initialData }) {

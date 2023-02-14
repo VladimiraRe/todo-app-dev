@@ -1,17 +1,10 @@
 .button {
-    display: inline-block;
-    color: inherit;
-    margin: 3px;
-    padding: 3px 7px;
     text-decoration: none;
+    text-transform: capitalize;
     border: 1px solid transparent;
     border-radius: 3px;
-    text-transform: capitalize;
 }
-.button:hover {
-    border-color: rgba(175, 47, 47, 0.1);
-}
-.button:not(.button--selected) {
+.button:not(.button--selected):not([disabled]) {
     cursor: pointer;
 }
 .button--selected {
