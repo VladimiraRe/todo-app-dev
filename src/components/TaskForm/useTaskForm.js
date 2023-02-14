@@ -40,7 +40,7 @@ export default function useTaskForm(startValue, { onSubmit, finishEditing }) {
             if (minutes < 10) minutes = `0${minutes}`;
             if (seconds < 10) seconds = `0${seconds}`;
 
-            return { hours, minutes, seconds };
+            return { hours: hours === null ? null : String(hours), minutes: String(minutes), seconds: String(seconds) };
         }
     }, [startValue.timer, secIn.hour, secIn.minute]);
 
