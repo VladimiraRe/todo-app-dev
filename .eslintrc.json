@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2022": true
+        "es2022": true,
+        "jest/globals": true
     },
     "extends": [
         "eslint:recommended",
@@ -25,11 +26,11 @@
             "presets": ["@babel/preset-react"]
         }
     },
-    "plugins": ["react", "jsx-a11y"],
+    "plugins": ["react", "jsx-a11y", "jest"],
     "parser": "@babel/eslint-parser",
     "rules": {
         "linebreak-style": ["off", "unix"],
-        "quotes": ["error", "single"], //in .prettierrc singleQuote must be true
+        "quotes": ["error", "single", { "avoidEscape": true }], //in .prettierrc singleQuote must be true
         "max-len": ["error", {"code": 120, "ignoreUrls": true}], //keep this and Prettier’s printWidth option in sync
         //rules of eslint-plugin-import:
         "import/no-unresolved": [2, { "caseSensitive": false }], //don't reported if './foo' is actually './Foo'

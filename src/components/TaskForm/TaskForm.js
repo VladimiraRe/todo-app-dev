@@ -5,7 +5,7 @@ import useTaskForm from './hooks/useTaskForm';
 import TaskFormTimer from './TaskFormTimer';
 import TaskFormWrap from './TaskFormWrap';
 
-export default function TaskForm({ startValue, onSubmit, finishEditing }) {
+export default function TaskForm({ startValue = { description: '', timer: null }, onSubmit, finishEditing }) {
     const { description, timer, newOnSubmit, onChange, onCancellation } = useTaskForm(startValue, {
         onSubmit,
         finishEditing,
