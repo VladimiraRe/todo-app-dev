@@ -20,7 +20,7 @@ export default function TaskFormWrap({
     }
 
     return (
-        <form onSubmit={(e) => newOnSubmit(e)} className={className}>
+        <form onSubmit={(e) => newOnSubmit(e)} className={className} aria-label='task form'>
             <input
                 name='description'
                 type='text'

@@ -43,7 +43,11 @@ export default function TaskList({
                 </li>
             );
         });
-    return <ul className='task-list'>{tasks}</ul>;
+    return (
+        <ul className='task-list' aria-label='task list'>
+            {tasks}
+        </ul>
+    );
 }
 
 TaskList.propTypes = {
